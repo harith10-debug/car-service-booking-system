@@ -10,16 +10,16 @@ jobs:
     env:
       APP_NAME: "DH Motorsport"
       APP_ENV: production
-      APP_DEBUG: false
+      APP_DEBUG: "false"
       APP_KEY: ${{ secrets.APP_KEY }}
 
       DB_CONNECTION: pgsql
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_SSLMODE: ${{ secrets.DB_SSLMODE }}
+      DB_HOST: aws-1-ap-south-1.pooler.supabase.com
+      DB_PORT: "6543"
+      DB_DATABASE: postgres
+      DB_USERNAME: postgres.bayqljbgeeuiwtajtvci
+      DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      DB_SSLMODE: require
 
       SESSION_DRIVER: cookie
       CACHE_DRIVER: array
@@ -42,8 +42,24 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
+      - name: Check database environment values
+        run: |
+          echo "DB_CONNECTION=$DB_CONNECTION"
+          echo "DB_HOST=$DB_HOST"
+          echo "DB_PORT=$DB_PORT"
+          echo "DB_DATABASE=$DB_DATABASE"
+          echo "DB_USERNAME=$DB_USERNAME"
+          echo "DB_SSLMODE=$DB_SSLMODE"
+          if [ -z "$DB_PASSWORD" ]; then echo "DB_PASSWORD is missing"; exit 1; else echo "DB_PASSWORD is set"; fi
+
       - name: Clear Laravel config
-        run: php artisan config:clear
+        run: |
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan optimize:clear
+
+      - name: Show Laravel database config
+        run: php artisan tinker --execute="dump(config('database.default'), config('database.connections.pgsql.host'), config('database.connections.pgsql.port'), config('database.connections.pgsql.database'), config('database.connections.pgsql.username'), config('database.connections.pgsql.sslmode'));"
 
       - name: Run migrations and seeders
         run: php artisan migrate --seed --force
