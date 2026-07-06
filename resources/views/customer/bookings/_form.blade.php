@@ -44,7 +44,7 @@
                     <input type="radio" aria-hidden="true" @checked((string) $selectedPackageId === (string) $package->id)>
                     <span class="service-icon mb-3"><i class="bi bi-tools"></i></span>
                     <h3 class="h6 service-option-title mb-2">{{ $package->package_name }}</h3>
-                    <p class="service-option-desc mb-0">{{ $package->description ?: 'Service package for your vehicle maintenance appointment.' }}</p>
+                    <p class="service-option-desc mb-0">{{ $package->description ?: 'DH Motorsport service package for your vehicle appointment.' }}</p>
                     <div class="service-option-meta">
                         <span class="duration-pill"><i class="bi bi-clock me-1"></i>{{ $package->estimated_duration }} min</span>
                         <span class="price-pill">RM {{ number_format($package->price, 2) }}</span>

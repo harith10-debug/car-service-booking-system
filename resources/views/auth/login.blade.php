@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Login')
+@section('title', 'Login | DH Motorsport')
 
 @section('content')
 <div class="row justify-content-center auth-shell">
     <div class="col-lg-5 col-md-7">
         <div class="card p-4">
             <div class="text-center mb-4">
-                <div class="display-5"><i class="bi bi-tools"></i></div>
-                <h1 class="h3 fw-bold">Car Service Booking</h1>
-                <p class="text-muted mb-0">Login to manage your service bookings.</p>
+                <div class="display-5 auth-brand-mark"><i class="bi bi-speedometer2"></i></div>
+                <h1 class="h3 fw-bold">DH Motorsport</h1>
+                <p class="text-muted mb-0">Login to manage your motorsport service bookings.</p>
             </div>
             <form method="POST" action="{{ route('login.post') }}">
                 @csrf
@@ -25,7 +25,7 @@
                     <input class="form-check-input" type="checkbox" name="remember" id="remember">
                     <label class="form-check-label" for="remember">Remember me</label>
                 </div>
-                <button class="btn btn-dark w-100" type="submit">Login</button>
+                <button class="btn btn-brand w-100" type="submit">Login</button>
             </form>
             <hr>
             <p class="text-center mb-0">No account? <a href="{{ route('register') }}">Register as customer</a></p>

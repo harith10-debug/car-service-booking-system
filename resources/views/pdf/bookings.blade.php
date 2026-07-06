@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    <h1>Car Service Booking Report</h1>
+    <h1>DH Motorsport Booking Report</h1>
     <div class="meta">
         Generated at: {{ $generatedAt->format('d M Y h:i A') }}<br>
         Filters:

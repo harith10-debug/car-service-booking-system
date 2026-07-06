@@ -1,4 +1,4 @@
-# Car Service Booking Management System
+# DH Motorsport
 
 A complete Laravel 10 web application for IMS566 and IMS560 group project requirements.
 
