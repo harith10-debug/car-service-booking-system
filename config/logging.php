@@ -6,7 +6,7 @@ use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+    'default' => env('LOG_CHANNEL', 'stderr'),
     'deprecations' => [
         'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
         'trace' => false,
@@ -31,13 +31,14 @@ return [
             'replace_placeholders' => true,
         ],
         'stderr' => [
-            'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => StreamHandler::class,
-            'formatter' => env('LOG_STDERR_FORMATTER'),
-            'with' => ['stream' => 'php://stderr'],
-            'processors' => [PsrLogMessageProcessor::class],
-        ],
+    'driver' => 'monolog',
+    'level' => env('LOG_LEVEL', 'debug'),
+    'handler' => Monolog\Handler\StreamHandler::class,
+    'formatter' => env('LOG_STDERR_FORMATTER'),
+    'with' => [
+        'stream' => 'php://stderr',
+    ],
+],
         'syslog' => [
             'driver' => 'syslog',
             'level' => env('LOG_LEVEL', 'debug'),
