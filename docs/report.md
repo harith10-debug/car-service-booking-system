@@ -1,149 +1,97 @@
-# Car Service Booking Management System Report
+# DH Motorsport Car Service Booking System Report
 
 ## 1. Introduction
-The Car Service Booking Management System is a web-based application that digitalises the manual process of booking vehicle maintenance services. Customers can register, add vehicles, view service packages and submit bookings. Admin staff can manage packages, monitor vehicles and customers, approve or reject bookings, mark services as completed, search records and export booking reports to PDF.
 
-## 2. Business Proposal
-Many car service centres still depend on phone calls, paper forms, WhatsApp messages or walk-in registration. This may cause duplicated records, missed appointments, slow approval and difficulty preparing reports. The proposed system centralises customer, vehicle, service package and booking data in one secure online platform.
+DH Motorsport Car Service Booking System is a Laravel web application that digitalises the car service booking process. Customers can register, add vehicles, select service packages, choose nearby workshops, book appointments, make payment and download receipts. Admin can monitor customers, vehicles, service packages, workshops, booking approvals, payments, sales and subscriptions.
 
-## 3. Objectives
-- Convert the real-world car service booking form into an online application.
-- Provide secure authentication for admin and customer users.
-- Implement CRUD operations for vehicles, service packages and bookings.
-- Enable admin search/filter and PDF export.
-- Design a normalized database with relationships, validation, indexing and status logs.
-- Produce a responsive Bootstrap interface and complete documentation.
+## 2. GitHub Repository Link
 
-## 4. Scope
-The scope includes customer registration/login, vehicle management, service package viewing, booking creation, booking approval workflow, admin management pages, PDF report export and user manual. Payment gateway, SMS notification and mechanic assignment are outside the current scope.
+Add the final GitHub repository link here before submission.
 
-## 5. Problem Statement
-Manual car service booking is inefficient because customer and vehicle details may be recorded repeatedly, appointment approval is hard to track, and management cannot quickly filter or export reports. A database-driven web application is needed to improve accuracy, efficiency and accessibility.
+## 3. Entity Relationship Diagram
 
-## 6. Intended Users
-- Admin: manages customers, vehicles, service packages, bookings and reports.
-- Customer: registers account, manages own vehicles and submits/monitors bookings.
+Refer to `docs/erd.md` for the Mermaid ERD and relationship explanation.
 
-## 7. Functional Requirements
-- Register, login and logout.
-- Role-based dashboard access.
-- Customer vehicle CRUD.
-- Admin service package CRUD.
-- Customer booking create, read, update before approval and cancel.
-- Admin booking view, approve, reject and complete.
-- Search/filter booking records by customer name, plate number, service type, date and status.
-- Export booking report to PDF.
+## 4. System Requirements
 
-## 8. Non-Functional Requirements
-- Secure password hashing.
-- Server-side validation and error handling.
-- Responsive UI using Bootstrap 5.
-- MySQL foreign keys and indexes for performance.
-- Clean Laravel MVC code structure.
-- Compatible with PHP 8.1+ and Google Chrome.
+- PHP 8.1 or above
+- Laravel 10
+- MySQL
+- Composer
+- Node.js and NPM
+- Google Chrome browser
+- DomPDF package for PDF export and receipt generation
 
-## 9. Tools and Technologies
-| Area | Tool |
-|---|---|
-| Backend | PHP 8.1+, Laravel 10 |
-| Database | MySQL |
-| Frontend | Blade, Bootstrap 5, Bootstrap Icons |
-| PDF | Laravel DomPDF |
-| Browser | Google Chrome |
-| Code Management | GitHub |
+## 5. Installation and Setup Guide
 
-## 10. ERD
-Entities: users, vehicles, service_packages, bookings and booking_status_logs.
+1. Extract the project.
+2. Run `composer install`.
+3. Run `npm install`.
+4. Copy `.env.example` to `.env`.
+5. Create database `car_service_booking`.
+6. Update database credentials in `.env`.
+7. Run `php artisan key:generate`.
+8. Run `php artisan migrate --seed`.
+9. Run `php artisan serve`.
+10. Open `http://127.0.0.1:8000` in Google Chrome.
 
-Relationships:
-- One user has many vehicles.
-- One user has many bookings.
-- One vehicle has many bookings.
-- One service package has many bookings.
-- One booking belongs to one user, one vehicle and one service package.
-- One booking has many booking status logs.
+## 6. Features and Functionalities
 
-## 11. Data Dictionary
-| Table | Field | Description |
-|---|---|---|
-| users | id | Primary key |
-| users | name, email, password, role, phone | User account and role data |
-| vehicles | id, user_id | Vehicle owned by a customer |
-| vehicles | plate_number, brand, model, year, color | Vehicle details |
-| service_packages | package_name, description, estimated_duration, price, status | Service package information |
-| bookings | user_id, vehicle_id, service_package_id | Booking relationships |
-| bookings | preferred_date, preferred_time, additional_notes, status, total_price | Appointment details |
-| booking_status_logs | booking_id, changed_by, from_status, to_status, remarks | Booking audit trail |
+### Customer
 
-## 12. System Architecture
-The system uses Laravel MVC architecture. Blade views handle the user interface, controllers process requests and validation, models represent database tables, migrations define schema, middleware protects role access, and MySQL stores records. DomPDF generates booking report PDFs.
+- Register/login/logout.
+- Vehicle CRUD.
+- Booking CRUD with service package card selection.
+- Nearby workshop finder with search and browser location sorting.
+- Preferred workshop selection during booking.
+- Payment for approved/completed bookings.
+- PDF receipt download.
+- Payment history.
+- Subscription plan page with benefits for customer and admin.
+- Subscription discount applied during payment.
 
-## 13. Installation Guide
-```bash
-composer install
-npm install
-cp .env.example .env
-php artisan key:generate
-```
-Create MySQL database:
-```sql
-CREATE DATABASE car_service_booking;
-```
-Update `.env`, then run:
-```bash
-php artisan migrate --seed
-php artisan serve
-```
-Open `http://127.0.0.1:8000` in Google Chrome.
+### Admin
 
-## 14. Features and Screenshots Placeholder
-Add screenshots for:
-- Login page
-- Register page
-- Admin dashboard
-- Customer dashboard
-- Vehicle CRUD page
-- Service package CRUD page
-- Booking form
-- Booking detail page
-- Booking filter page
-- PDF report output
+- Admin dashboard with totals, booking queue, recent payments and sales metrics.
+- Accept/reject/complete booking monitor.
+- Booking search/filter and PDF export.
+- Payment and sale monitor with method breakdown and PDF export.
+- Service package CRUD.
+- Workshop CRUD.
+- Subscription plan CRUD.
+- Subscription monitor for active subscribers and revenue.
+- Customer and vehicle monitoring.
 
-## 15. CRUD Workflow
-1. Customer registers and logs in.
-2. Customer adds vehicle details.
-3. Customer views active service packages.
-4. Customer creates a booking with vehicle, package, date, time and notes.
-5. Customer may edit booking while status is Pending.
-6. Admin reviews all bookings.
-7. Admin approves, rejects or completes the booking.
-8. System records every status change in booking status logs.
-9. Admin filters bookings and exports PDF report.
+## 7. User Interface Overview
 
-## 16. Testing Table
-See `docs/test-cases.md`.
+The UI uses Bootstrap 5 and custom CSS. Navigation is separated by role. Customer navigation includes Dashboard, My Vehicles, Packages, Workshops, My Bookings, Payments and Subscription. Admin navigation includes Dashboard, Customers, Vehicles, Workshops, Packages, Bookings, Sales and Subscriptions.
 
-## 17. Team Roles and Contribution
-| Role | Contribution |
-|---|---|
-| Project Manager | Planning, task distribution, presentation lead |
-| Database Designer | ERD, migrations, seeders, data dictionary |
-| Backend Developer | Laravel routes, controllers, models, validation |
-| Frontend Developer | Blade pages, Bootstrap responsive UI |
-| Tester/Documentation | Test cases, user manual, report, screenshots |
+## 8. Workflow of Form
 
-## 18. Limitations
-- No online payment integration.
-- No email/SMS reminder.
-- No mechanic/staff scheduling module.
-- No cloud deployment included by default.
+1. Customer registers/logs in.
+2. Customer creates vehicle record.
+3. Customer selects service package and workshop.
+4. Customer submits booking.
+5. Admin reviews booking in the acceptance monitor.
+6. Admin accepts/rejects/completes booking.
+7. Customer pays approved/completed booking.
+8. System stores payment and generates receipt.
+9. Admin monitors payment and sales.
 
-## 19. Future Improvements
-- Add payment gateway.
-- Add email notification for booking approval/rejection.
-- Add mechanic assignment and service bay scheduling.
-- Add charts for monthly bookings and revenue.
-- Add REST API or mobile app integration.
+## 9. Team Roles and Contributions
 
-## 20. Conclusion
-The system fulfils the requirements of a database-driven web application with authentication, CRUD, search/filter, PDF export, responsive UI and proper documentation. It improves the traditional car service booking process by centralising records and automating booking status management.
+Replace this section with actual group member names and roles.
+
+- Project Manager: coordinates tasks and presentation.
+- Backend Developer: Laravel controllers, routes, models and migrations.
+- Frontend Developer: Blade views, Bootstrap UI and JavaScript interactions.
+- Database Designer: ERD, migrations and seed data.
+- Documentation Lead: report, user manual and test cases.
+
+## 10. Contact Information
+
+Support email: support@dhmotorsport.test
+
+## 11. Conclusion and Reflection
+
+The system meets the IMS566 requirements by using a backend framework, authentication, database interaction, CRUD operations, search/filter, PDF export and responsive UI. Extra features such as payment, receipt, nearby workshop finder, sales monitor and subscription plans improve system usefulness and demonstrate stronger technical implementation.

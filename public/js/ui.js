@@ -1,4 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const updatePriceEstimator = (select) => {
+        const estimator = document.querySelector('[data-price-estimator]');
+        if (!estimator || !select) return;
+
+        const selectedOption = select.options[select.selectedIndex];
+        const rawPrice = selectedOption ? Number(selectedOption.dataset.price || 0) : 0;
+        const discountPercent = Number(select.dataset.discountPercent || 0);
+        const discount = rawPrice * discountPercent / 100;
+        const payable = Math.max(rawPrice - discount, 0);
+
+        if (!rawPrice) {
+            estimator.textContent = 'Choose a service to see estimated total.';
+            return;
+        }
+
+        estimator.innerHTML = `
+            <span>Service Price: <strong>RM ${rawPrice.toFixed(2)}</strong></span>
+            <span>Subscription Discount: <strong>RM ${discount.toFixed(2)}</strong></span>
+            <span>Total Payable: <strong>RM ${payable.toFixed(2)}</strong></span>
+        `;
+    };
+
     const selectableCards = document.querySelectorAll('[data-service-card]');
 
     selectableCards.forEach((card) => {
@@ -16,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetSelect && packageId) {
                 targetSelect.value = packageId;
                 targetSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                updatePriceEstimator(targetSelect);
             }
 
             const radio = card.querySelector('input[type="radio"]');
@@ -52,9 +75,34 @@ document.addEventListener('DOMContentLoaded', () => {
                     helper.textContent = '';
                 }
             }
+
+            updatePriceEstimator(select);
         };
 
         select.addEventListener('change', updateCards);
         updateCards();
+    });
+
+    document.querySelectorAll('[data-use-location]').forEach((button) => {
+        button.addEventListener('click', () => {
+            if (!navigator.geolocation) {
+                alert('Your browser does not support location detection.');
+                return;
+            }
+
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Detecting...';
+
+            navigator.geolocation.getCurrentPosition((position) => {
+                const url = new URL(window.location.href);
+                url.searchParams.set('lat', position.coords.latitude);
+                url.searchParams.set('lng', position.coords.longitude);
+                window.location.href = url.toString();
+            }, () => {
+                button.disabled = false;
+                button.innerHTML = '<i class="bi bi-crosshair me-1"></i>Use My Location';
+                alert('Unable to detect location. You can still search by city or service.');
+            });
+        });
     });
 });

@@ -23,6 +23,10 @@ class UpdateBookingRequest extends FormRequest
                 'required',
                 Rule::exists('service_packages', 'id')->where('status', 'Active'),
             ],
+            'workshop_id' => [
+                'nullable',
+                Rule::exists('workshops', 'id')->where('status', 'Active'),
+            ],
             'preferred_date' => ['required', 'date', 'after_or_equal:today'],
             'preferred_time' => ['required', 'date_format:H:i'],
             'additional_notes' => ['nullable', 'string', 'max:1000'],

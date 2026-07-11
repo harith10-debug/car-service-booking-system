@@ -840,3 +840,68 @@ a:hover {
         gap: 1rem;
     }
 }
+
+/* IMS566 feature additions: payments, receipt, workshops and subscriptions */
+.booking-price-box {
+    border: 1px solid rgba(255, 208, 0, .25);
+    border-radius: 1rem;
+    padding: .85rem 1rem;
+    background: rgba(0, 0, 0, .20);
+    display: grid;
+    gap: .35rem;
+    min-height: 54px;
+    color: #f8fafc;
+}
+
+.distance-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: .45rem .7rem;
+    border-radius: 999px;
+    background: rgba(255, 208, 0, .14);
+    border: 1px solid rgba(255, 208, 0, .28);
+    color: var(--accent);
+    font-weight: 800;
+    font-size: .85rem;
+}
+
+.workshop-card,
+.subscription-card,
+.receipt-preview {
+    border-color: rgba(255, 208, 0, .18);
+}
+
+.benefit-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.benefit-list li {
+    display: flex;
+    gap: .65rem;
+    align-items: flex-start;
+    margin-bottom: .7rem;
+    color: #eef2f7;
+}
+
+.benefit-list i {
+    color: var(--accent);
+    margin-top: .12rem;
+}
+
+.progress {
+    height: .7rem;
+    background: rgba(255, 255, 255, .10);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--brand), var(--accent));
+}
+
+.receipt-preview {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03)),
+        var(--surface);
+}

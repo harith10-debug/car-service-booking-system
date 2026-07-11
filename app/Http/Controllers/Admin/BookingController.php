@@ -24,7 +24,7 @@ class BookingController extends Controller
 
     public function show(Booking $booking)
     {
-        $booking->load(['user', 'vehicle', 'servicePackage', 'statusLogs.changedBy']);
+        $booking->load(['user', 'vehicle', 'servicePackage', 'workshop', 'payment', 'statusLogs.changedBy']);
         return view('admin.bookings.show', compact('booking'));
     }
 
@@ -59,6 +59,10 @@ class BookingController extends Controller
             return back()->with('error', 'Cancelled bookings cannot be updated.');
         }
 
+        if ($status === 'Rejected' && $booking->payment()->where('status', 'Paid')->exists()) {
+            return back()->with('error', 'Paid bookings cannot be rejected.');
+        }
+
         $booking->update([
             'status' => $status,
             'admin_remarks' => $remarks,
@@ -77,7 +81,7 @@ class BookingController extends Controller
 
     public static function filteredBookingQuery(Request $request)
     {
-        return Booking::with(['user', 'vehicle', 'servicePackage'])
+        return Booking::with(['user', 'vehicle', 'servicePackage', 'workshop', 'payment'])
             ->when($request->filled('customer'), function ($query) use ($request) {
                 $query->whereHas('user', fn($q) => $q->where('name', 'like', '%' . $request->customer . '%'));
             })
@@ -88,6 +92,16 @@ class BookingController extends Controller
                 $query->whereHas('servicePackage', fn($q) => $q->where('package_name', 'like', '%' . $request->service_type . '%'));
             })
             ->when($request->filled('preferred_date'), fn($query) => $query->whereDate('preferred_date', $request->preferred_date))
-            ->when($request->filled('status'), fn($query) => $query->where('status', $request->status));
+            ->when($request->filled('status'), fn($query) => $query->where('status', $request->status))
+            ->when($request->filled('payment_status'), function ($query) use ($request) {
+                if ($request->payment_status === 'Paid') {
+                    $query->whereHas('payment', fn($q) => $q->where('status', 'Paid'));
+                } elseif ($request->payment_status === 'Unpaid') {
+                    $query->whereDoesntHave('payment');
+                }
+            })
+            ->when($request->filled('workshop'), function ($query) use ($request) {
+                $query->whereHas('workshop', fn($q) => $q->where('name', 'like', '%' . $request->workshop . '%'));
+            });
     }
 }

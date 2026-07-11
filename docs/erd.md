@@ -1,20 +1,96 @@
-# ERD Explanation
+# Entity Relationship Diagram Description
 
-```text
-users (1) ────< vehicles
-users (1) ────< bookings
-vehicles (1) ────< bookings
-service_packages (1) ────< bookings
-bookings (1) ────< booking_status_logs
-users (1) ────< booking_status_logs through changed_by
+```mermaid
+erDiagram
+    USERS ||--o{ VEHICLES : owns
+    USERS ||--o{ BOOKINGS : makes
+    USERS ||--o{ PAYMENTS : pays
+    USERS ||--o{ USER_SUBSCRIPTIONS : subscribes
+    USERS ||--o{ BOOKING_STATUS_LOGS : changes
+    VEHICLES ||--o{ BOOKINGS : used_for
+    SERVICE_PACKAGES ||--o{ BOOKINGS : selected_in
+    WORKSHOPS ||--o{ BOOKINGS : assigned_to
+    BOOKINGS ||--o{ BOOKING_STATUS_LOGS : has
+    BOOKINGS ||--o| PAYMENTS : has
+    SUBSCRIPTION_PLANS ||--o{ USER_SUBSCRIPTIONS : includes
+
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        enum role
+        string phone
+    }
+    VEHICLES {
+        bigint id PK
+        bigint user_id FK
+        string plate_number
+        string brand
+        string model
+        int year
+    }
+    SERVICE_PACKAGES {
+        bigint id PK
+        string package_name
+        int estimated_duration
+        decimal price
+        enum status
+    }
+    WORKSHOPS {
+        bigint id PK
+        string name
+        string address
+        string city
+        decimal latitude
+        decimal longitude
+        enum status
+    }
+    BOOKINGS {
+        bigint id PK
+        bigint user_id FK
+        bigint vehicle_id FK
+        bigint service_package_id FK
+        bigint workshop_id FK
+        date preferred_date
+        time preferred_time
+        enum status
+        decimal total_price
+    }
+    PAYMENTS {
+        bigint id PK
+        bigint booking_id FK
+        bigint user_id FK
+        string payment_reference UK
+        enum method
+        decimal amount
+        decimal discount_amount
+        decimal total_paid
+        enum status
+    }
+    SUBSCRIPTION_PLANS {
+        bigint id PK
+        string plan_name UK
+        decimal monthly_price
+        decimal discount_percentage
+        int priority_level
+        enum status
+    }
+    USER_SUBSCRIPTIONS {
+        bigint id PK
+        bigint user_id FK
+        bigint subscription_plan_id FK
+        string subscription_reference UK
+        timestamp starts_at
+        timestamp ends_at
+        enum status
+    }
 ```
 
-## Explanation
+## Normalisation Notes
 
-- `users` stores both admins and customers. The `role` field controls access.
-- `vehicles` stores customer-owned vehicle details and uses `user_id` as a foreign key.
-- `service_packages` stores services created by admin and selected by customers.
-- `bookings` connects customer, vehicle and service package into one appointment record.
-- `booking_status_logs` stores the audit trail for each status change.
-
-This design is normalized because user, vehicle, package and booking data are separated into their own tables. Repeated data is avoided, and foreign keys maintain referential integrity.
+- User data is stored once in `users` and referenced by vehicles, bookings, payments and subscriptions.
+- Vehicle records are separated from bookings to prevent repeating plate, brand and model in every booking.
+- Service package price and duration are stored in `service_packages`; booking stores `total_price` as a transaction snapshot.
+- Workshop location is separated into `workshops` so customers can search nearby locations and bookings can reference one workshop.
+- Payment is separated from booking because not all bookings are paid immediately.
+- Subscription plans are separated from user subscriptions so admin can manage reusable plan definitions.

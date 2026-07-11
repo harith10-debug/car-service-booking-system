@@ -11,9 +11,12 @@
             <h2 class="h5 fw-bold mb-3">Booking Detail</h2>
             <dl class="row mb-0">
                 <dt class="col-sm-4">Status</dt><dd class="col-sm-8">@include('partials.status-badge', ['status' => $booking->status])</dd>
+                <dt class="col-sm-4">Payment</dt><dd class="col-sm-8">@include('partials.payment-status-badge', ['payment' => $booking->payment])</dd>
                 <dt class="col-sm-4">Customer</dt><dd class="col-sm-8">{{ $booking->user->name }} ({{ $booking->user->email }})</dd>
                 <dt class="col-sm-4">Vehicle</dt><dd class="col-sm-8">{{ $booking->vehicle->plate_number }} - {{ $booking->vehicle->brand }} {{ $booking->vehicle->model }} {{ $booking->vehicle->year }}</dd>
                 <dt class="col-sm-4">Service Package</dt><dd class="col-sm-8">{{ $booking->servicePackage->package_name }}</dd>
+                <dt class="col-sm-4">Workshop</dt><dd class="col-sm-8">{{ $booking->workshop?->name ?? 'Not selected' }}</dd>
+                <dt class="col-sm-4">Workshop Address</dt><dd class="col-sm-8">{{ $booking->workshop?->address ?? '-' }}</dd>
                 <dt class="col-sm-4">Date & Time</dt><dd class="col-sm-8">{{ $booking->preferred_date->format('d M Y') }} at {{ substr($booking->preferred_time,0,5) }}</dd>
                 <dt class="col-sm-4">Total Price</dt><dd class="col-sm-8">RM {{ number_format($booking->total_price, 2) }}</dd>
                 <dt class="col-sm-4">Customer Notes</dt><dd class="col-sm-8">{{ $booking->additional_notes ?: '-' }}</dd>
@@ -21,12 +24,24 @@
             </dl>
         </div>
 
+        @if($booking->payment)
+            <div class="card p-4 mb-4">
+                <h2 class="h5 fw-bold mb-3">Payment Record</h2>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Reference</dt><dd class="col-sm-8"><a href="{{ route('admin.payments.show', $booking->payment) }}">{{ $booking->payment->payment_reference }}</a></dd>
+                    <dt class="col-sm-4">Method</dt><dd class="col-sm-8">{{ $booking->payment->method }}</dd>
+                    <dt class="col-sm-4">Paid At</dt><dd class="col-sm-8">{{ $booking->payment->paid_at?->format('d M Y h:i A') }}</dd>
+                    <dt class="col-sm-4">Total Paid</dt><dd class="col-sm-8 fw-bold text-success">RM {{ number_format($booking->payment->total_paid, 2) }}</dd>
+                </dl>
+            </div>
+        @endif
+
         <div class="card p-4">
             <h2 class="h5 fw-bold mb-3">Admin Actions</h2>
             <div class="d-flex flex-wrap gap-2">
                 <form method="POST" action="{{ route('admin.bookings.approve', $booking) }}">
                     @csrf @method('PATCH')
-                    <button class="btn btn-primary" @disabled($booking->status === 'Cancelled' || $booking->status === 'Completed')>Approve</button>
+                    <button class="btn btn-primary" @disabled($booking->status === 'Cancelled' || $booking->status === 'Completed')>Accept / Approve</button>
                 </form>
                 <form method="POST" action="{{ route('admin.bookings.complete', $booking) }}">
                     @csrf @method('PATCH')

@@ -39,6 +39,32 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(UserSubscription::class);
+    }
+
+    public function activeSubscription()
+    {
+        return $this->hasOne(UserSubscription::class)
+            ->where('status', 'Active')
+            ->where('starts_at', '<=', now())
+            ->where('ends_at', '>=', now())
+            ->latestOfMany();
+    }
+
+    public function subscriptionDiscountPercentage(): float
+    {
+        $subscription = $this->activeSubscription()->with('plan')->first();
+
+        return $subscription?->plan?->discount_percentage ? (float) $subscription->plan->discount_percentage : 0.0;
+    }
+
     public function statusLogs()
     {
         return $this->hasMany(BookingStatusLog::class, 'changed_by');

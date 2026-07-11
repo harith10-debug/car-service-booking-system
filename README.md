@@ -1,6 +1,6 @@
-# DH Motorsport
+# DH Motorsport Car Service Booking System
 
-A complete Laravel 10 web application for IMS566 and IMS560 group project requirements.
+A complete Laravel 10 web application prepared for the IMS566 group project requirements. The system digitalises a car service booking process with customer booking, admin approval, payment, receipt, nearby workshop finder, subscription plan, reports and responsive UI.
 
 ## Stack
 
@@ -9,7 +9,7 @@ A complete Laravel 10 web application for IMS566 and IMS560 group project requir
 - MySQL
 - Blade + Bootstrap 5
 - Laravel DomPDF
-- Custom Laravel authentication
+- Custom Laravel authentication and role-based middleware
 
 ## Default Accounts
 
@@ -48,17 +48,31 @@ http://127.0.0.1:8000
 
 ## Main Features
 
-- Register, login, logout
-- Admin and customer dashboards
-- Role-based route protection
-- Customer vehicle CRUD
-- Customer booking CRUD with edit/cancel before approval
-- Admin service package CRUD
-- Admin booking approval/rejection/completion
-- Search/filter bookings by customer name, plate number, package, date and status
-- PDF export for booking reports
-- Responsive Bootstrap 5 UI
-- Normalized MySQL database with foreign keys and indexes
+### Core IMS566 Requirements
+
+- Authentication: register, login, logout and role-based redirects.
+- CRUD: customer vehicles, customer bookings, admin service packages, admin workshops and admin subscription plans.
+- Search/filter: bookings, customers, vehicles, service packages, workshops, payments and subscriptions.
+- PDF export: booking report, payment sales report and customer payment receipt.
+- Responsive Bootstrap 5 UI with consistent navigation and dark motorsport theme.
+- Normalized database tables with foreign keys, indexes and validation.
+
+### Added Customer Features
+
+- Make payment for approved/completed bookings.
+- Download official PDF receipt after payment.
+- Find nearby workshops with Shah Alam default distance and browser location sorting.
+- Select a preferred workshop during booking.
+- Subscribe to membership plans for discounts and priority booking.
+- View payment history and subscription history.
+
+### Added Admin Features
+
+- Booking acceptance monitor with quick accept action.
+- Payment and sales monitor with totals, average payment and payment method breakdown.
+- Manage workshop locations for the customer finder.
+- Monitor subscriptions and subscriber revenue.
+- Manage subscription plans and benefits.
 
 ## Useful Documentation
 
@@ -66,4 +80,4 @@ http://127.0.0.1:8000
 - `docs/user-manual.md`
 - `docs/test-cases.md`
 - `docs/database-schema.sql`
-- `FULL_CODE_REFERENCE.md`
+- `docs/erd.md`

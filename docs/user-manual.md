@@ -1,53 +1,39 @@
-# User Manual
+# DH Motorsport User Manual
 
-## Admin Login
-1. Open the system in Google Chrome.
-2. Login using `admin@example.com` and password `password`.
-3. The admin dashboard displays customers, vehicles, packages and booking statistics.
+## Login Accounts
 
-## Admin: Manage Service Packages
-1. Click **Packages**.
-2. Click **Add Package**.
-3. Enter package name, description, estimated duration, price and status.
-4. Click **Save Package**.
-5. Use **Edit** to update package details.
-6. Use **Delete** only if the package has no booking record. Otherwise, set it to Inactive.
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@example.com | password |
+| Customer | customer@example.com | password |
 
-## Admin: Manage Bookings
-1. Click **Bookings**.
-2. Use the filter form to search by customer, plate number, service type, date or status.
-3. Click **View** to see details.
-4. Click **Approve**, **Reject Booking**, or **Mark Completed**.
-5. The system records the action in the status log.
+## Customer Manual
 
-## Admin: Export PDF Report
-1. Go to **Bookings**.
-2. Apply filters if required.
-3. Click **Export PDF**.
-4. The PDF includes booking ID, customer name, vehicle plate, service type, date, time, status and total price.
+1. Register or log in as a customer.
+2. Add a vehicle from **My Vehicles**.
+3. Open **Packages** or **My Bookings > Create Booking**.
+4. Choose a service package. The selected package card is highlighted.
+5. Choose a preferred workshop or open **Workshops** to find nearby DH Motorsport locations.
+6. Submit the booking. The booking starts as **Pending**.
+7. Wait for admin to approve the booking.
+8. After approval, open the booking and click **Pay Now**.
+9. Choose a payment method and submit the payment.
+10. Open **Payments** to view the payment record or download the PDF receipt.
+11. Open **Subscription** to subscribe to a plan. Active plans apply discounts during payment.
 
-## Customer Registration
-1. Click **Register as customer**.
-2. Fill name, email, phone, password and password confirmation.
-3. Submit the form.
-4. The system redirects to the customer dashboard.
+## Admin Manual
 
-## Customer: Add Vehicle
-1. Click **My Vehicles**.
-2. Click **Add Vehicle**.
-3. Fill plate number, brand, model, year and color.
-4. Click **Save Vehicle**.
+1. Log in as admin.
+2. Open **Bookings** to monitor submitted bookings.
+3. Use filters for customer, plate number, service, workshop, date, status and payment status.
+4. Click **Accept** or open a booking and approve/reject/complete it.
+5. Open **Sales** to monitor payment records and total sales.
+6. Export sales data as PDF using **Export Sales PDF**.
+7. Open **Workshops** to create, update, delete or deactivate workshop records.
+8. Open **Subscriptions** to monitor active subscribers and revenue.
+9. Open **Manage Plans** to create/update/delete subscription plans.
+10. Export booking data as PDF from **Bookings**.
 
-## Customer: Create Booking
-1. Click **Create Booking**.
-2. Select vehicle and service package.
-3. Choose preferred service date and time.
-4. Add notes if needed.
-5. Submit the booking.
-6. The status will be **Pending** until admin approval.
+## Receipt Process
 
-## Customer: Edit or Cancel Booking
-1. Open **My Bookings**.
-2. Click **View**.
-3. If status is Pending, click **Edit** to change booking details.
-4. If status is Pending or Approved, click **Cancel Booking** to cancel.
+Payment receipt is generated automatically after a customer pays for an approved/completed booking. The receipt includes receipt reference, customer, payer, booking, vehicle, workshop, service amount, discount and total paid.

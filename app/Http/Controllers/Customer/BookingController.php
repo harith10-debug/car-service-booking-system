@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
 use App\Models\BookingStatusLog;
 use App\Models\ServicePackage;
+use App\Models\Workshop;
 
 class BookingController extends Controller
 {
@@ -15,7 +16,7 @@ class BookingController extends Controller
     {
         $bookings = auth()->user()
             ->bookings()
-            ->with(['vehicle', 'servicePackage'])
+            ->with(['vehicle', 'servicePackage', 'workshop', 'payment'])
             ->latest()
             ->paginate(10);
 
@@ -26,8 +27,10 @@ class BookingController extends Controller
     {
         $vehicles = auth()->user()->vehicles()->orderBy('plate_number')->get();
         $packages = ServicePackage::where('status', 'Active')->orderBy('package_name')->get();
+        $workshops = Workshop::where('status', 'Active')->orderBy('city')->orderBy('name')->get();
+        $activeSubscription = auth()->user()->activeSubscription()->with('plan')->first();
 
-        return view('customer.bookings.create', compact('vehicles', 'packages'));
+        return view('customer.bookings.create', compact('vehicles', 'packages', 'workshops', 'activeSubscription'));
     }
 
     public function store(StoreBookingRequest $request)
@@ -55,7 +58,7 @@ class BookingController extends Controller
     public function show(Booking $booking)
     {
         $this->ensureOwner($booking);
-        $booking->load(['vehicle', 'servicePackage', 'statusLogs.changedBy']);
+        $booking->load(['vehicle', 'servicePackage', 'workshop', 'payment', 'statusLogs.changedBy']);
 
         return view('customer.bookings.show', compact('booking'));
     }
@@ -67,8 +70,10 @@ class BookingController extends Controller
 
         $vehicles = auth()->user()->vehicles()->orderBy('plate_number')->get();
         $packages = ServicePackage::where('status', 'Active')->orderBy('package_name')->get();
+        $workshops = Workshop::where('status', 'Active')->orderBy('city')->orderBy('name')->get();
+        $activeSubscription = auth()->user()->activeSubscription()->with('plan')->first();
 
-        return view('customer.bookings.edit', compact('booking', 'vehicles', 'packages'));
+        return view('customer.bookings.edit', compact('booking', 'vehicles', 'packages', 'workshops', 'activeSubscription'));
     }
 
     public function update(UpdateBookingRequest $request, Booking $booking)

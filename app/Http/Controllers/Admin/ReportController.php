@@ -18,7 +18,7 @@ class ReportController extends Controller
 
         $pdf = Pdf::loadView('pdf.bookings', [
             'bookings' => $bookings,
-            'filters' => $request->only(['customer', 'plate_number', 'service_type', 'preferred_date', 'status']),
+            'filters' => $request->only(['customer', 'plate_number', 'service_type', 'preferred_date', 'status', 'payment_status', 'workshop']),
             'generatedAt' => now(),
         ])->setPaper('a4', 'landscape');
 

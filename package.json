@@ -1,8 +1,13 @@
 {
     "private": true,
     "scripts": {
-        "dev": "echo \"No frontend dev server needed\"",
-        "build": "echo \"No frontend build needed for Laravel Blade project\""
+        "dev": "vite",
+        "build": "vite build"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "@vitejs/plugin-vue": "latest",
+        "axios": "latest",
+        "laravel-vite-plugin": "latest",
+        "vite": "latest"
+    }
 }

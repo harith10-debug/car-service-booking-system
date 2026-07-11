@@ -1,5 +1,7 @@
 @php
     $selectedPackageId = old('service_package_id', $booking->service_package_id ?? request('service_package_id'));
+    $selectedWorkshopId = old('workshop_id', $booking->workshop_id ?? request('workshop_id'));
+    $discountPercent = $activeSubscription?->plan?->discount_percentage ?? 0;
 @endphp
 
 <div class="row">
@@ -31,12 +33,26 @@
             <span class="section-badge align-self-lg-start"><i class="bi bi-hand-index-thumb"></i> Select one service</span>
         </div>
 
+        @if($activeSubscription)
+            <div class="alert alert-success d-flex align-items-center gap-2">
+                <i class="bi bi-stars"></i>
+                <div><strong>{{ $activeSubscription->plan->plan_name }}</strong> active: {{ number_format($discountPercent, 0) }}% discount will be applied during payment.</div>
+            </div>
+        @else
+            <div class="alert alert-info d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                <span><i class="bi bi-gem me-1"></i>Subscribe to unlock service discounts and priority booking.</span>
+                <a href="{{ route('customer.subscriptions.index') }}" class="btn btn-sm btn-outline-dark">View Plans</a>
+            </div>
+        @endif
+
         <div class="service-selection-grid mb-3">
             @forelse($packages as $package)
                 <div class="service-option-card {{ (string) $selectedPackageId === (string) $package->id ? 'selected' : '' }}"
                      data-service-card
                      data-service-group="booking-form"
                      data-package-id="{{ $package->id }}"
+                     data-package-price="{{ $package->price }}"
+                     data-discount-percent="{{ $discountPercent }}"
                      data-target-select="service_package_id"
                      tabindex="0"
                      role="button"
@@ -56,15 +72,33 @@
         </div>
 
         <label class="form-label small text-muted">Selected Service Package</label>
-        <select id="service_package_id" name="service_package_id" class="form-select service-package-select" required>
+        <select id="service_package_id" name="service_package_id" class="form-select service-package-select" required data-discount-percent="{{ $discountPercent }}">
             <option value="">-- Select service package --</option>
             @foreach($packages as $package)
-                <option value="{{ $package->id }}" @selected((string) $selectedPackageId === (string) $package->id)>
+                <option value="{{ $package->id }}" data-price="{{ $package->price }}" @selected((string) $selectedPackageId === (string) $package->id)>
                     {{ $package->package_name }} - RM {{ number_format($package->price, 2) }}
                 </option>
             @endforeach
         </select>
         <div class="selected-service-helper alert alert-success mt-2 mb-0 py-2" data-selected-helper="service_package_id"></div>
+    </div>
+
+    <div class="col-12 mb-3">
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-2 mb-3">
+            <div>
+                <label class="form-label mb-1">Nearby Workshop</label>
+                <p class="text-muted small mb-0">Choose the most suitable DH Motorsport workshop. You can also open the nearby workshop finder for more details.</p>
+            </div>
+            <a href="{{ route('customer.workshops.index') }}" class="btn btn-sm btn-outline-brand btn-rounded align-self-lg-start"><i class="bi bi-geo-alt me-1"></i>Find Nearby Workshop</a>
+        </div>
+        <select name="workshop_id" class="form-select">
+            <option value="">-- Let admin assign workshop --</option>
+            @foreach($workshops as $workshop)
+                <option value="{{ $workshop->id }}" @selected((string) $selectedWorkshopId === (string) $workshop->id)>
+                    {{ $workshop->name }} - {{ $workshop->city }} ({{ $workshop->opening_hours ?: 'Hours not set' }})
+                </option>
+            @endforeach
+        </select>
     </div>
 
     <div class="col-md-3 mb-3">
@@ -74,6 +108,10 @@
     <div class="col-md-3 mb-3">
         <label class="form-label">Preferred Time</label>
         <input type="time" name="preferred_time" class="form-control" value="{{ old('preferred_time', isset($booking) ? substr($booking->preferred_time,0,5) : '') }}" required>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Estimated Payable</label>
+        <div class="booking-price-box" data-price-estimator>Choose a service to see estimated total.</div>
     </div>
     <div class="col-12 mb-3">
         <label class="form-label">Additional Notes</label>

@@ -34,7 +34,7 @@
                 <div class="hero-badge mb-3"><i class="bi bi-lightning-charge-fill"></i> Motorsport-inspired service booking</div>
                 <h1 class="hero-title mb-4">Book your service with <span>pit-stop confidence.</span></h1>
                 <p class="hero-copy mb-4">
-                    DH Motorsport helps customers register vehicles, choose a service package, select a preferred slot and track every booking from pending to completed.
+                    DH Motorsport helps customers register vehicles, choose a service package, find nearby workshops, pay approved bookings and download official receipts.
                 </p>
                 <div class="hero-actions mb-4">
                     <a href="{{ route('register') }}" class="btn btn-brand btn-lg btn-rounded px-4"><i class="bi bi-calendar2-check me-2"></i>Start Booking</a>
@@ -42,8 +42,8 @@
                 </div>
                 <div class="hero-trust">
                     <span><i class="bi bi-check-circle-fill"></i> Online booking</span>
-                    <span><i class="bi bi-check-circle-fill"></i> Status tracking</span>
-                    <span><i class="bi bi-check-circle-fill"></i> Customer dashboard</span>
+                    <span><i class="bi bi-check-circle-fill"></i> Payment receipt</span>
+                    <span><i class="bi bi-check-circle-fill"></i> Workshop finder</span>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -140,8 +140,8 @@
             @foreach([
                 ['1', 'Create Account', 'Register as a customer and access your personal dashboard.'],
                 ['2', 'Add Vehicle', 'Save your plate number, brand, model, year and color.'],
-                ['3', 'Choose Service', 'Select the service package and preferred appointment time.'],
-                ['4', 'Track Status', 'View whether your booking is pending, approved, completed or cancelled.'],
+                ['3', 'Choose Service', 'Select the service package, preferred workshop and appointment time.'],
+                ['4', 'Pay & Download Receipt', 'Pay after admin approval and keep the PDF receipt for your record.'],
             ] as [$number, $title, $description])
                 <div class="col-lg-3 col-md-6">
                     <div class="process-card">
@@ -168,8 +168,9 @@
                 ['bi-phone', 'Mobile Friendly', 'Book or check your appointment from desktop, tablet or phone.'],
                 ['bi-shield-check', 'Secure Access', 'Your vehicles and bookings are protected inside your own account.'],
                 ['bi-search', 'Easy Tracking', 'Quickly view booking details, service price and current status.'],
-                ['bi-receipt', 'Clear Records', 'Every booking stores date, time, service type and total price.'],
-                ['bi-lightning-charge', 'Fast Actions', 'Edit or cancel pending bookings before approval.'],
+                ['bi-geo-alt', 'Nearby Workshop', 'Find DH Motorsport branches around Shah Alam and nearby areas.'],
+                ['bi-receipt', 'PDF Receipt', 'Every paid booking can generate an official receipt for customer records.'],
+                ['bi-gem', 'Subscription Benefits', 'Customers can subscribe for discounts while admin gains recurring sales insight.'],
                 ['bi-flag', 'Sporty Experience', 'Red, yellow and black visuals make the interface feel energetic.'],
             ] as [$icon, $title, $description])
                 <div class="col-lg-4 col-md-6">

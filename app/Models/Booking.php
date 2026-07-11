@@ -15,6 +15,7 @@ class Booking extends Model
         'user_id',
         'vehicle_id',
         'service_package_id',
+        'workshop_id',
         'preferred_date',
         'preferred_time',
         'additional_notes',
@@ -41,6 +42,21 @@ class Booking extends Model
     public function servicePackage()
     {
         return $this->belongsTo(ServicePackage::class);
+    }
+
+    public function workshop()
+    {
+        return $this->belongsTo(Workshop::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->payment && $this->payment->status === 'Paid';
     }
 
     public function statusLogs()
